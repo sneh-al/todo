@@ -1,0 +1,175 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: aqua;
+    flex-direction: column;
+}
+
+header h1 {
+    font-size: 2rem;
+    padding: 4rem 0 2rem 0;
+    color: antiquewhite;
+}
+
+.form {
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+header,
+.formBody,
+main,
+form,
+body,
+.todoDiv,
+.todoli,
+.todoList,
+.dispalyTodo,
+.formControl {
+    display: flex;
+    align-items: center;
+}
+
+main {
+    flex-direction: column;
+}
+
+
+/* .formControl #filter */
+
+form {
+    flex-direction: column;
+}
+
+form input,
+form button {
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    width: auto;
+    background-color: white;
+    padding: .5rem;
+}
+
+form #filter {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    border: none;
+    outline: none;
+    width: 10rem;
+    font-size: 1rem;
+    padding: .5rem;
+    transition: all 0.3s ease-in-out;
+}
+
+form .control {
+    background-color: white;
+    min-width: 30%;
+    margin: 0 auto;
+}
+
+form button {
+    color: black;
+    cursor: pointer;
+    transition: all .2s ease-in;
+}
+
+form button:hover {
+    background-color: rgb(108, 216, 108);
+    color: white;
+}
+
+form button:focus {
+    background-color: rgb(14, 138, 14);
+    color: white;
+}
+
+.formControl {
+    position: relative;
+    margin: 1rem;
+    overflow: hidden;
+}
+
+.formControl::after {
+    content: "\25bC";
+    background-color: chartreuse;
+    color: brown;
+    top: 0;
+    right: 0;
+    font-size: 1rem;
+    padding: .5rem;
+    pointer-events: none;
+}
+
+select {
+    color: brown;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.dispalyTodo {
+    padding: 1rem;
+    justify-content: center;
+}
+
+.todoList {
+    flex-direction: column;
+    list-style: none;
+}
+
+.todoDiv {
+    justify-content: space-between;
+    background: white;
+    margin: .5rem auto;
+    color: black;
+}
+
+
+/* 1
+.divBtn {
+    align-items: center;
+    right: 0;
+} */
+
+.todoDiv li {
+    flex: 1;
+    font-size: 1rem;
+    padding: .5rem;
+}
+
+.trashbtn,
+.completebtn {
+    font-size: 1rem;
+    padding: .5rem;
+    border: none;
+    outline: none;
+    color: white;
+}
+
+.completebtn:hover {
+    background-color: rgb(233, 92, 134);
+    color: white;
+}
+
+.trashbtn:hover {
+    background-color: rgb(170, 21, 66);
+    color: white;
+}
+
+.fa-trash,
+.fa-check {
+    pointer-events: none;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
