@@ -1,0 +1,21 @@
+<svg width="300" height="300" viewBox="0 -25 300 300">
+		<g stroke-linecap="round" stroke-linejoin="round" stroke="var(--heart-c)" stroke-width="12" fill="transparent">
+			<g class="circles">
+				<circle cx="100" cy="100" r="50" stroke-dashoffset="314" stroke-dasharray="314">
+					<animate attributeName="stroke-dashoffset" from="314" to="0" dur="1000ms" fill="freeze" begin="1000ms"/>
+					<animate attributeName="fill" from="#FFCDD2" to="#F06292" dur="300ms" begin="p.end" fill="freeze"/>
+				</circle>
+				<circle cx="200" cy="100" r="50" stroke-dashoffset="314" stroke-dasharray="314" transform="rotate(180 200 100)">
+					<animate id="c" attributeName="stroke-dashoffset" from="314" to="0" dur="1000ms" fill="freeze" begin="1000ms"/>
+					<animate attributeName="fill" from="#FFCDD2" to="#F06292" dur="300ms" begin="p.end" fill="freeze"/>
+				</circle>
+			</g>
+			<g class="polygons">
+				<polygon points="60,130 240,130 150,220" stroke-dashoffset="450" stroke-dasharray="450">
+					<animate id="p" attributeName="stroke-dashoffset" from="450" to="0" dur="1000ms" fill="freeze" begin="c.end"/>
+					<animate id="f" attributeName="fill" from="#FFCDD2" to="#F06292" dur="300ms" begin="p.end" fill="freeze"/>
+				</polygon>
+			</g>
+
+		</g>
+	</svg>

@@ -7,7 +7,11 @@ const {
   deleteTodo,
 } = require("../controller/todoControler");
 
-router.route("/").get(getTodos).post(createTodo);
-router.route("/:id").put(updateTodo).delete(deleteTodo);
+router
+  .route("/:listId")
+  .get(getTodos)
+  .post(createTodo)
+  .put(updateTodo)
+  .delete(deleteTodo);
 
 module.exports = router;

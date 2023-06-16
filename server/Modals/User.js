@@ -15,6 +15,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    favourite: {
+      type: [
+        {
+          id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "List",
+            required: true,
+          },
+          title: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,

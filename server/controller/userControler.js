@@ -8,10 +8,11 @@ const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      favourite: user.favourite,
     });
   } else {
     res.status(404);
@@ -55,6 +56,7 @@ const createUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      favourite: user.favourite,
     });
   } else {
     res.status(400);
@@ -80,10 +82,11 @@ const authUser = asyncHandler(async (req, res) => {
   if (user && (await user.matchPassword(password))) {
     genToken(res, user._id);
 
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      favourite: user.favourite,
     });
   } else {
     res.status(401);
@@ -91,32 +94,30 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-//@descUpdate user
+//@descUpdate password
 //@route GET /api/v1/user
 //@access private
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
+  const user = await User.findById(req.body.id);
+  const password = req.body.oldPassword;
+  const isMatched = await user.matchPassword(password);
+  if (user && isMatched) {
+    user.password = req.body.password;
 
     const updatedUser = await user.save();
 
-    res.json({
+    res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      favourite: user.favourite,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(401);
+    throw new Error("Invalid  password");
   }
 });
+
 module.exports = {
   createUser,
   getUser,

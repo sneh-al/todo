@@ -1,31 +1,44 @@
-const LandingPage = () => {
-  return (
-    <div className='container p-6 bg-gradient-to-r from-purple-200 to-blue-300 '>
-      <div className='flex flex-col justify-center items-center min-h-screen '>
-        <div className='text-center'>
-          <h1 className='text-4xl font-bold mb-4 title'>
-            Get Organized and Stay Productive with To-Do
-          </h1>
-          <p className='text-lg mb-8'>
-            Simplify your life, prioritize tasks, and accomplish more with ease.
-          </p>
-        </div>
+import { Link, Navigate } from "react-router-dom";
+import heroImage from "../assets/hero.svg";
+import { useSelector } from "react-redux";
 
-        <div className='bg-red '>
-          {sections.map((section, i) => (
-            <div className=' text-white text-left mb-6' key={i}>
-              <h3 className='text-xl font-bold text-red-400'>
-                {section.title}
-              </h3>
-              <p className=' text-purple-800'>{section.description}</p>
+const LandingPage = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  if (userInfo) {
+    return <Navigate to='/home' replace />;
+  }
+  return (
+    <section className='bg-slate-900'>
+      <div className='flex flex-wrap '>
+        <div className=' lg:pt-16 pb-6 w-full lg:w-1/2 h-screen flex z-10'>
+          <div className='max-w-md m-auto flex '>
+            <div className=' m-6'>
+              <h1 className='text-3xl font-bold mb-4 title'>
+                Get Organized and Stay Productive with TaskSuchi
+              </h1>
+              {sections.map((section, i) => (
+                <div className=' text-white text-left mb-6' key={i}>
+                  <h3 className='text-xl font-bold text-red-400'>
+                    {section.title}
+                  </h3>
+                  <p className=' text-purple-800'>{section.description}</p>
+                </div>
+              ))}
+              <Link
+                to='/register'
+                className='py-2 px-6 rounded-t-xl rounded-l-xl bg-white hover:bg-gray-500 text-gray-600 hover:text-white transition duration-200 font-bold'>
+                Get Started
+              </Link>
             </div>
-          ))}
-          <button className='py-3 px-6 bg-yellow-500 text-white font-semibold rounded hover:bg-yellow-600 transition duration-200'>
-            Get Started
-          </button>
+          </div>
+        </div>
+        <div className='block relative w-full lg:w-1/2 bg-green-600'>
+          <div className='absolute bottom-0 inset-x-0 mx-auto mb-12 max-w-xl text-center'>
+            <img className='lg:max-w-xl mx-auto' src={heroImage} alt='' />
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

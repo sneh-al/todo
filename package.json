@@ -1,12 +1,14 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "todo react",
+  "description": "TaskSuchi",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "devStart": "nodemon server/server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run devStart\" \"npm run client\""
   },
   "author": "sneh-al",
   "license": "ISC",
@@ -19,5 +21,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.1",
     "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
   }
 }

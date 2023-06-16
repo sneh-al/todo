@@ -1,18 +1,28 @@
 const asyncHandler = require("express-async-handler");
+const List = require("../Modals/list");
+const User = require("../Modals/User");
 
 //@desc Get User List
 //@route GET /api/v1/lists
 //@access private
 const getUserLists = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "list list" });
+  try {
+    const userId = req.params.userId;
+    const lists = await List.find({ user: userId });
+    res.status(200).json(lists);
+  } catch (error) {
+    res.status(500);
+    throw new Error("An error occurred while retrieving the lists.");
+  }
 });
 
 //@desc Create new  list
 //@route POST /api/v1/lists
 //@access private
 const createList = asyncHandler(async (req, res) => {
-  const todo = req.body;
-  res.status(200).json({ message: "list created" });
+  const newList = new List(req.body);
+  await newList.save();
+  res.status(201).json(newList);
 });
 
 //@desc Update   List
@@ -29,4 +39,42 @@ const deleteList = asyncHandler(async (req, res) => {
   const id = req.params.id;
   res.status(200).json({ message: id });
 });
-module.exports = { getUserLists, createList, updateList, deleteList };
+
+//@desc Delete   List
+//@route DELETE /api/v1/Lists/:id
+//@access private
+const setfavList = asyncHandler(async (req, res) => {
+  const id = req.params.userId;
+  const user = await User.findById(id);
+  if (user) {
+    user.favourite = req.body;
+    const updatedUser = await user.save();
+    res.status(200).json(updatedUser.favourite);
+  } else {
+    res.status(401);
+    throw new Error("Invalid  password");
+  }
+
+  res.status(200).json({ message: id });
+});
+
+const getFavList = asyncHandler(async (req, res) => {
+  const id = req.params.userId;
+  const user = await User.findById(id);
+  if (user) {
+    res.status(200).json(user.favourite);
+  } else {
+    res.status(401);
+    throw new Error("NOt  FOund");
+  }
+
+  res.status(200).json({ message: id });
+});
+module.exports = {
+  getUserLists,
+  createList,
+  updateList,
+  deleteList,
+  setfavList,
+  getFavList,
+};
