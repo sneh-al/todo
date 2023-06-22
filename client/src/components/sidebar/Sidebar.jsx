@@ -12,13 +12,13 @@ const Sidebar = () => {
 
   return (
     <nav
-      className={`absolute flex flex-col z-10 min-h-screen w-fit  bg-orange-400 top-0 p-6   transition-display ease-in duration-500 overflow-y-auto ${
+      className={`absolute top-0 flex flex-col z-10 min-h-screen w-fit overflow-hidden  bg-orange-400 p-6   transition-display ease-in duration-500 overflow-y-auto ${
         !isSidebar && "hidden"
       }`}>
       <ul className='md:hidden block w-full '>
         <UserMenu />
       </ul>
-      <ul className='flex flex-col    '>
+      <ul className='flex flex-col  overflow-hidden   '>
         <Lists />
         <>
           {links.map((link) => (
@@ -115,13 +115,6 @@ const AllSvg = ({ className }) => (
   </svg>
 );
 const links = [
-  {
-    id: 1,
-    title: "Favorite",
-    to: "/favorites",
-    Icon: HeartSvg,
-    Component: FavList,
-  },
   {
     id: 2,
     title: "All lists",

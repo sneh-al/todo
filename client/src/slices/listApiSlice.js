@@ -17,6 +17,19 @@ const listApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteList: builder.mutation({
+      query: (data) => ({
+        url: `${LIST_URL}/${data}`,
+        method: "DELETE",
+      }),
+    }),
+    updateList: builder.mutation({
+      query: (data) => ({
+        url: `${LIST_URL}/${data.listId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
 
     getFav: builder.mutation({
       query: (data) => ({
@@ -31,5 +44,6 @@ const listApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetListsMutation,
   useCreateListMutation,
-  
+  useUpdateListMutation,
+  useDeleteListMutation,
 } = listApiSlice;

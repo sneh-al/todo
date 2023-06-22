@@ -9,7 +9,7 @@ const Modal = ({ children, closeModal }) => {
           &#8203;
         </span>
         <div
-          className='relative inline-block  align-center bg-white  rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full '
+          className='relative inline-block m-0 p-0 justify-center  align-center bg-white  rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full '
           role='dialog'
           aria-modal='true'
           aria-labelledby='modal-headline'>

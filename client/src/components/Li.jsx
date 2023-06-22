@@ -1,37 +1,39 @@
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   useDeleteTodoMutation,
   useUpdateTodoMutation,
 } from "../slices/todoApiSlice";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setTodo } from "../slices/todoSlice";
+import { setTodoStatus, updatetodo } from "../slices/todoSlice";
 import { toast } from "react-toastify";
 
 const Li = ({ todo }) => {
   const { id } = useParams();
   const [selected, setSelected] = useState(null);
+  const [checked, setChecked] = useState(todo?.isCompleted);
   const [edit, setEdit] = useState(false);
+
+  //show hide edit field
   const handleInput = () => {
     setEdit(!edit);
   };
-  const [checked, setChecked] = useState(todo?.isCompleted);
 
   const [deleteTodo] = useDeleteTodoMutation();
   const [updateTodo, { isLoading }] = useUpdateTodoMutation();
   const dispatch = useDispatch();
 
   //delete todo
-  const handleDeleteTodo = async (todoid) => {
+  const handleDeleteTodo = async () => {
     const data = {
       listId: id,
-      id: todoid,
+      id: todo._id,
     };
     try {
-      const { todos } = await deleteTodo(data).unwrap();
-      const todoList = todos.todos;
-      dispatch(setTodo(todoList));
-      toast.error("Deleted successfully");
+      const res = await deleteTodo(data).unwrap();
+      dispatch(deleteTodo(res.id));
+
+      toast.success("Deleted successfully");
     } catch (error) {
       toast.error(error?.data?.message || error?.error);
     }
@@ -45,11 +47,14 @@ const Li = ({ todo }) => {
         action: "edit",
         text: text.trim(),
       };
-      const { todos } = await updateTodo(data).unwrap();
-      const todoList = todos.todos;
-      dispatch(setTodo(todoList));
+      const res = await updateTodo(data).unwrap();
+      dispatch(updatetodo(data));
       handleInput();
-      toast.success("Updated successfully");
+      if (res.type === "success") {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
     } catch (error) {
       toast.error(error?.data?.message || error?.error);
     }
@@ -64,11 +69,13 @@ const Li = ({ todo }) => {
         isCompleted: checked,
         action: "setStatus",
       };
-
-      const { todos } = await updateTodo(data).unwrap();
-      const todoList = todos.todos;
-      dispatch(setTodo(todoList));
-      toast.success("Updated successfully");
+      const res = await updateTodo(data).unwrap();
+      dispatch(setTodoStatus(selected));
+      if (res.type === "success") {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
       setSelected(null);
     } catch (error) {
       toast.error(error?.data?.message || error?.error);
@@ -79,6 +86,7 @@ const Li = ({ todo }) => {
     setChecked(!checked);
     setSelected(todoId);
   };
+
   useEffect(() => {
     selected && handleComplete();
   }, [selected]);
@@ -87,13 +95,19 @@ const Li = ({ todo }) => {
   const showMenu = () => {
     setShow(!show);
   };
+
   return (
     <li
-      className='relative bg-white rounded-lg m-h-64 p-1 transform   transition duration-300 '
+      className={`relative  rounded-lg m-h-64 p-1 transform   transition duration-300 ${
+        todo?.isCompleted ? "bg-green-800" : "bg-white"
+      }`}
       key={todo._id}
       onMouseEnter={showMenu}
       onMouseLeave={showMenu}>
-      <div className='rounded-lg p-4 bg-purple-800 flex flex-col md:flex-row relative '>
+      <div
+        className={`rounded-lg p-4  flex flex-col md:flex-row relative   transition duration-600 ${
+          todo?.isCompleted ? "bg-green-600" : "bg-purple-800"
+        }`}>
         {edit ? (
           <TodoInput
             handleUpdate={handleUpdate}
@@ -109,7 +123,7 @@ const Li = ({ todo }) => {
             handleCheckboxChange={handleCheckboxChange}
             show={show}
             handleInput={handleInput}
-            handleDeleteTodo={handleDeleteTodo}
+            handleDelete={handleDeleteTodo}
           />
         )}
       </div>
@@ -118,6 +132,7 @@ const Li = ({ todo }) => {
 };
 
 export default Li;
+
 const TodoInput = ({ handleUpdate, id, text }) => {
   const inputRef = useRef();
   const handleSubmit = async () => {
@@ -148,15 +163,15 @@ const TodoInput = ({ handleUpdate, id, text }) => {
   );
 };
 
-function Actions({
+const Actions = ({
   checked,
   isLoading,
   handleCheckboxChange,
   show,
   handleInput,
-  handleDeleteTodo,
+  handleDelete,
   todo,
-}) {
+}) => {
   return (
     <>
       <div className='flex'>
@@ -170,14 +185,14 @@ function Actions({
         />
         <label
           htmlFor={todo._id}
-          className={`${
-            checked ? "bg-green-600 rounded-full" : "bg-white"
-          } h-5 my-auto w-5 transition-all duration-100 ease-in`}></label>
+          className={`  transition duration-300 ease-linear ${
+            checked ? "bg-green-800 rounded-full " : "bg-white"
+          } h-5 my-auto w-5 `}></label>
       </div>
       <p className='font-bold text-lg p-3'>{todo.title}</p>
       <div
-        className={`${
-          show ? "ml-auto top-0 block absolute right-0" : "hidden"
+        className={`ml-auto transition duration-300 ease-linear  ${
+          show ? " block" : "hidden"
         }`}>
         <button
           className='bg-orange-500 p-3 capitalize hover:bg-orange-800 hover:text-white'
@@ -186,10 +201,10 @@ function Actions({
         </button>
         <button
           className='p-3 bg-red-500 hover:bg-red-800 hover:text-white capitalize'
-          onClick={() => handleDeleteTodo(todo._id)}>
+          onClick={handleDelete}>
           delete
         </button>
       </div>
     </>
   );
-}
+};

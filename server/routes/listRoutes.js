@@ -9,8 +9,8 @@ const {
   getFavList,
 } = require("../controller/listController");
 
-router.route("/:userId").get(getUserLists).post(createList).put(setfavList);
-router.route("/:userId/fav").get(getFavList);
+router.route("/:userId").get(getUserLists).post(createList);
 router.route("/:id").put(updateList).delete(deleteList);
+router.route("/:userId/fav").get(getFavList);
 
 module.exports = router;

@@ -8,13 +8,13 @@ import { setLists } from "../../slices/listSlice";
 import createSvg from "../../assets/create.svg";
 import { toast } from "react-toastify";
 
-const Lists = () => {
+const Lists = ({ isEdit }) => {
   const inputRef = useRef(null);
   const [getLists, { isLoading }] = useGetListsMutation();
   const [createList] = useCreateListMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(isEdit || false);
   const getList = async () => {
     const userId = userInfo._id;
     try {

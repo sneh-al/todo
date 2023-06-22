@@ -1,10 +1,13 @@
+import { useSelector } from "react-redux";
 import { Link, Outlet, useParams } from "react-router-dom";
 
 const ListRoot = () => {
   const { id } = useParams();
+  const { lists } = useSelector((state) => state.lists);
+  const item = lists.find((list) => list._id === id);
   return (
     <div className=' w-full'>
-      <Breadcumbs id={id} />
+      <Breadcumbs item={item} />
       <div className='p-6'>
         <Outlet />
       </div>
@@ -13,7 +16,7 @@ const ListRoot = () => {
 };
 
 export default ListRoot;
-const Breadcumbs = ({ id }) => (
+const Breadcumbs = ({ item }) => (
   <header>
     <nav className='flex bg-orange-500' aria-label='Breadcrumb'>
       <ol className='inline-flex items-center space-x-1 md:space-x-3 p-2'>
@@ -46,7 +49,7 @@ const Breadcumbs = ({ id }) => (
                 clipRule='evenodd'></path>
             </svg>
             <Link className='inline-flex items-center text-sm font-medium text-purple-900 hover:text-blue-900 '>
-              {id}
+              {item?.name}
             </Link>
           </div>
         </li>

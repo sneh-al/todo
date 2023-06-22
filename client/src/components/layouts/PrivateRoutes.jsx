@@ -16,7 +16,7 @@ const PrivateRoutes = () => {
         <Link className='border-l' to='/home'>
           <img src={logo} alt='logo ' style={{ height: "5rem" }} />
         </Link>
-        <div className='hidden md:block ml-auto mr-5 '>
+        <div className='hidden md:block ml-auto mr-5 z-10 '>
           <UserMenu />
         </div>
       </nav>

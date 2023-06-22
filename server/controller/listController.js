@@ -29,6 +29,13 @@ const createList = asyncHandler(async (req, res) => {
 //@route PUT /api/v1/lists/:id
 //@access private
 const updateList = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+
+  let list = await List.findOne({ _id: id });
+
+  list.name = req.body.name;
+  await list.save();
+
   res.status(200).json({ message: "list updated" });
 });
 
@@ -37,11 +44,16 @@ const updateList = asyncHandler(async (req, res) => {
 //@access private
 const deleteList = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  res.status(200).json({ message: id });
+  const deletedTodo = await List.findOneAndDelete({ _id: id });
+  if (!deletedTodo) {
+    // Handle case where the todo with the given ID was not found
+    throw new Error("Todo not found");
+  }
+  res.status(200).json({ message: "List Deleted" });
 });
 
-//@desc Delete   List
-//@route DELETE /api/v1/Lists/:id
+//@desc Set Faviourite List
+//@route Set Fav /api/v1/Lists/:id
 //@access private
 const setfavList = asyncHandler(async (req, res) => {
   const id = req.params.userId;

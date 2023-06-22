@@ -38,20 +38,44 @@ const updateTodo = asyncHandler(async (req, res) => {
   let todos = await Todo.findOne({ list: listId });
 
   if (req.body.action === "setStatus") {
+    let item = todos.todos.find((todo) => todo.id === req.body.todoId);
+    if (item === undefined) {
+      return res.json({
+        message: "Todo not found",
+        id: req.body.todoId,
+        type: "error",
+      });
+    }
     todos.todos = todos.todos.map((todo) =>
       todo.id === req.body.todoId
         ? { ...todo, isCompleted: !todo.isCompleted }
         : todo
     );
     await todos.save();
+    res.json({
+      message: "Status updated successfully",
+      id: req.body.todoId,
+      type: "success",
+    });
   } else {
+    let item = todos.todos.find((todo) => todo.id === req.body.todoId);
+    if (item === undefined) {
+      return res.json({
+        message: "Todo not found",
+        id: req.body.todoId,
+        type: "error",
+      });
+    }
     todos.todos = todos.todos.map((todo) =>
       todo.id === req.body.todoId ? { ...todo, title: req.body.text } : todo
     );
     await todos.save();
+    res.json({
+      message: "Todo updated",
+      id: req.body.todoId,
+      type: "success",
+    });
   }
-
-  res.json({ message: "set status", todos });
 });
 
 //@desc Delete   todo
@@ -62,7 +86,7 @@ const deleteTodo = asyncHandler(async (req, res) => {
   let todos = await Todo.findOne({ list: listId });
   todos.todos = todos.todos.filter((todo) => todo.id !== req.body.id);
   await todos.save();
-  res.json({ message: "To do deleted", todos });
+  res.json({ message: "To do deleted", id: req.body.id });
 });
 module.exports = {
   getTodos,

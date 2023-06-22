@@ -27,7 +27,7 @@ const ListComponent = () => {
   };
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [id]);
   return (
     <ul className='gap-2 flex flex-col py-4 '>
       {isLoading

@@ -6,7 +6,7 @@ const AllList = () => {
   const { lists } = useSelector((state) => state.lists);
 
   return (
-    <ul className=''>
+    <ul className='overflow-hide'>
       {lists.map((fav) => (
         <li key={fav._id} className='bg-red-100  p-3 w-full flex'>
           <Link
